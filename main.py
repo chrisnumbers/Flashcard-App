@@ -37,14 +37,17 @@ def flipCard():
     #languageLabel.config(background="green")
 
 def usePracticeData():
+    loadData()
     global activeData
     try:
         activeData = dataToPractice
+        newFlashcard()
     except NameError:
         tkinter.messagebox.showerror("Error","You currently don't have any practice data.")
 def useFullData():
     global activeData
     activeData=data
+    newFlashcard()
 
 def optionWrong():
     try:

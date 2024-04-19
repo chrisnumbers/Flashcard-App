@@ -14,7 +14,13 @@ def loadData():
 
 
 #Random piece of data for flashcard
+windowScheduled = False
 def newFlashcard():
+    global windowScheduled
+    global scheduledFlip
+    if windowScheduled == True:
+        window.after_cancel(scheduledFlip)
+        print("Cancelled current scheduled flip")
     global randomData
     #languageLabel.config(text=data.columns.values[0].capitalize())
     canvas.itemconfig(languageName, text=data.columns.values[0].capitalize())
@@ -24,8 +30,8 @@ def newFlashcard():
     canvas.itemconfig(flashcardImage, image=front)
     global translation
     translation =randomData.values[0][1]
-    window.after(3000, flipCard)
-
+    scheduledFlip = window.after(3000, flipCard)
+    windowScheduled = True
 
 def flipCard():
     global translation

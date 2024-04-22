@@ -13,8 +13,10 @@ def loadData():
         print("No practice data found.")
 
 
-#Random piece of data for flashcard
+#Variable is for checking if there is already a current flip countdown in progress
 windowScheduled = False
+
+
 def newFlashcard():
     global windowScheduled
     global scheduledFlip
@@ -22,25 +24,20 @@ def newFlashcard():
         window.after_cancel(scheduledFlip)
         print("Cancelled current scheduled flip")
     global randomData
-    #languageLabel.config(text=data.columns.values[0].capitalize())
     canvas.itemconfig(languageName, text=data.columns.values[0].capitalize())
     randomData = activeData.sample()
-    #wordLabel.config(text=randomData.values[0][0])
     canvas.itemconfig(word,text=randomData.values[0][0])
     canvas.itemconfig(flashcardImage, image=front)
     global translation
     translation =randomData.values[0][1]
-    scheduledFlip = window.after(3000, flipCard)
+    scheduledFlip = window.after(3000, flipCard) #After 3 seconds, run flipCard method
     windowScheduled = True
 
 def flipCard():
     global translation
-    #languageLabel.config(text=data.columns.values[1].capitalize())
-    #wordLabel.config(text=translation)
     canvas.itemconfig(languageName,text=data.columns.values[1].capitalize())
     canvas.itemconfig(word, text=translation)
     canvas.itemconfig(flashcardImage, image=back)
-    #languageLabel.config(background="green")
 
 def usePracticeData():
     loadData()
@@ -50,10 +47,12 @@ def usePracticeData():
         newFlashcard()
     except NameError:
         tkinter.messagebox.showerror("Error","You currently don't have any practice data.")
+
 def useFullData():
     global activeData
     activeData=data
     newFlashcard()
+
 
 def optionWrong():
     try:
@@ -83,13 +82,8 @@ xmark = tkinter.PhotoImage(file="images\wrong.png")
 wrong = tkinter.Button(image=xmark, highlightthickness=0, borderwidth=0, background=BACKGROUNDCOLOR, activebackground=BACKGROUNDCOLOR,command=optionWrong)
 wrong.grid(column=1,row=1)
 
-#languageLabel = tkinter.Label(font=("Arial", 24, "italic"),background="white")
 languageName = canvas.create_text(200,60,font=(FONT, 24, "italic"))
-#languageLabel.place(x=200,y=60, anchor="center")
-
-#wordLabel = tkinter.Label(font=("Arial", 34),background="white",)
 word = canvas.create_text(200,160,font=(FONT, 34))
-#wordLabel.place(x=200,y=160,anchor="center")
 
 #Buttons to choose data
 practiceChoice = tkinter.Button(text="Practice", font=(FONT, 12),borderwidth=0, highlightthickness=0, width=7, command=usePracticeData)
